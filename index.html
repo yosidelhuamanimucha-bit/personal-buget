@@ -1,13 +1,144 @@
 <!doctype html>
-<html lang="en">
+<html lang="es">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>💰</text></svg>">
     <title>Gestor de Presupuesto Personal</title>
+
+    <!-- 1. Carga Tailwind -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- 2. Configura modo oscuro -->
+    <script>
+      tailwind.config = {
+        darkMode: 'class'
+      }
+    </script>
+
+    <!-- 3. Detecta preferencia del sistema -->
+    <script>
+      if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.documentElement.classList.add('dark');
+      }
+    </script>
   </head>
-  <body>
-    <h1>Gestor de Presupuesto Personal</h1>
-    <p>Abre la consola del navegador (F12 → Console) para interactuar.</p>
+
+  <body class="min-h-screen bg-gray-50 dark:bg-gray-900 transition-colors duration-300">
+    <main class="max-w-4xl mx-auto px-4 py-8">
+
+      <header class="mb-6 flex items-center justify-between">
+        <div>
+          <h1 class="text-xl md:text-3xl font-bold text-gray-800 dark:text-white">
+            💰 Gestor de Presupuesto
+          </h1>
+          <p class="text-sm md:text-base text-gray-500 dark:text-gray-400">
+            Tu dinero, bajo control.
+          </p>
+        </div>
+        <!-- Botón toggle modo oscuro -->
+        <button
+          id="toggle-dark"
+          class="p-2 rounded-lg bg-gray-200 dark:bg-gray-700 text-gray-800
+                 dark:text-white transition hover:scale-105"
+        >
+          🌙
+        </button>
+      </header>
+
+      <section class="grid grid-cols-1 md:grid-cols-2 gap-6">
+
+        <!-- Tarjeta resumen -->
+        <div class="p-6 bg-white dark:bg-gray-800 rounded-xl shadow
+                    transition duration-300 hover:scale-105 hover:shadow-lg">
+          <h2 class="text-sm font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wide">
+            Saldo total
+          </h2>
+          <p id="saldo" class="mt-1 text-2xl md:text-4xl font-bold text-gray-800 dark:text-white">
+            $0.00
+          </p>
+          <div class="flex flex-col sm:flex-row gap-4 mt-4">
+            <div class="flex-1 p-3 bg-green-50 dark:bg-green-900 rounded-lg">
+              <p class="text-xs text-green-700 dark:text-green-300">Ingresos</p>
+              <p id="total-ingresos" class="text-lg font-semibold text-green-700 dark:text-green-300">
+                $0.00
+              </p>
+            </div>
+            <div class="flex-1 p-3 bg-red-50 dark:bg-red-900 rounded-lg">
+              <p class="text-xs text-red-700 dark:text-red-300">Gastos</p>
+              <p id="total-gastos" class="text-lg font-semibold text-red-700 dark:text-red-300">
+                $0.00
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Tarjeta formulario -->
+        <div class="p-6 bg-white dark:bg-gray-800 rounded-xl shadow
+                    transition duration-300 hover:scale-105 hover:shadow-lg">
+          <h2 class="mb-4 text-lg font-semibold text-gray-800 dark:text-white">
+            Agregar movimiento
+          </h2>
+          <form id="form-mov" class="space-y-3">
+            <input
+              id="nombre"
+              type="text"
+              placeholder="Nombre"
+              class="w-full p-2 border border-gray-300 dark:border-gray-600 rounded-lg
+                     bg-white dark:bg-gray-700 text-gray-800 dark:text-white
+                     placeholder-gray-400 dark:placeholder-gray-500
+                     focus:outline-none focus:ring-2 focus:ring-blue-500"
+            />
+            <select
+              id="tipo"
+              class="w-full p-2 border border-gray-300 dark:border-gray-600 rounded-lg
+                     bg-white dark:bg-gray-700 text-gray-800 dark:text-white
+                     focus:outline-none focus:ring-2 focus:ring-blue-500"
+            >
+              <option value="ingreso">Ingreso</option>
+              <option value="gasto">Gasto</option>
+            </select>
+            <input
+              id="monto"
+              type="number"
+              placeholder="Monto"
+              class="w-full p-2 border border-gray-300 dark:border-gray-600 rounded-lg
+                     bg-white dark:bg-gray-700 text-gray-800 dark:text-white
+                     placeholder-gray-400 dark:placeholder-gray-500
+                     focus:outline-none focus:ring-2 focus:ring-blue-500"
+            />
+            <input
+              id="categoria"
+              type="text"
+              placeholder="Categoría (ej: comida, salud...)"
+              class="w-full p-2 border border-gray-300 dark:border-gray-600 rounded-lg
+                     bg-white dark:bg-gray-700 text-gray-800 dark:text-white
+                     placeholder-gray-400 dark:placeholder-gray-500
+                     focus:outline-none focus:ring-2 focus:ring-blue-500"
+            />
+            <button
+              type="submit"
+              class="w-full p-3 bg-blue-600 text-white font-semibold rounded-lg
+                     hover:bg-blue-700 hover:scale-105 transition duration-200"
+            >
+              Agregar
+            </button>
+          </form>
+        </div>
+
+      </section>
+
+      <!-- Lista de movimientos -->
+      <section class="mt-6 p-6 bg-white dark:bg-gray-800 rounded-xl shadow
+                      transition duration-300 hover:shadow-lg">
+        <h2 class="mb-4 text-lg font-semibold text-gray-800 dark:text-white">
+          Movimientos
+        </h2>
+        <ul id="lista" class="space-y-2"></ul>
+      </section>
+
+    </main>
+
     <script src="oop-objects.js"></script>
     <script src="functional-utils.js"></script>
     <script src="app.js"></script>

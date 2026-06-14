@@ -3,14 +3,14 @@
 // ============================================
 
 class Movimiento {
-  constructor(nombre, tipo, valor) {
-    this.nombre = nombre;
-    this.tipo   = tipo;
-    this.valor  = valor;
-    this.fecha  = new Date().toLocaleDateString();
+  constructor(nombre, tipo, valor, categoria = 'general') {
+    this.nombre    = nombre;
+    this.tipo      = tipo;
+    this.valor     = valor;
+    this.categoria = categoria;                      // ← NUEVO
+    this.fecha     = new Date().toLocaleDateString();
   }
 
-  // ── NUEVO ──────────────────────────────────
   esValido() {
     if (!this.nombre || this.nombre.trim() === '') {
       console.log('❌ El nombre no puede estar vacío.');
@@ -32,7 +32,7 @@ class Movimiento {
 
   datosMovimiento() {
     const signo = this.esIngreso() ? '+' : '-';
-    return `${this.nombre} (${this.tipo}): ${signo}$${this.valor.toFixed(2)}`;
+    return `${this.nombre} (${this.tipo}): ${signo}$${this.valor.toFixed(2)} [${this.categoria}]`;
   }
 }
 
